@@ -8,7 +8,7 @@ set idx=1
     echo.
     echo Current Directory: %cd%
 
-    call :print_dir !idx! , n
+    call :print_dir !idx! , sel , n
     choice /c wsadx /n
     
     @REM if 'w' key is pressed - move selected directory up
@@ -29,12 +29,12 @@ set idx=1
         cd ..
         setlocal enableextensions enabledelayedexpansion
         set idx=1
-        goto loop
+        goto :loop
     )
     @REM if 'd' key is pressed -enter selected directory
     if %errorlevel%==4 (
-        endlocal & set "selected=%sel%"
-        cd !selected!
+        @REM echo %sel%
+        endlocal & cd %sel%
         setlocal enableextensions enabledelayedexpansion
         set idx=1
         goto :loop
@@ -52,8 +52,9 @@ set idx=1
         set /a i+=1
         if %~1==!i! (
             echo ^> %%~D
+            set %2=%%~D
         ) else (
             echo   %%~D
         )
     )
-    set %2=!i!
+    set %3=!i!
